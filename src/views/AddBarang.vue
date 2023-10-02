@@ -381,7 +381,7 @@ export default {
       //     this.barangs[i].status_id = this.selectedKategori.id;
       //   }
       axios
-        .post("/api/produk", this.barang)
+        .post("/api/barang", this.barangs)
         .then((response) => {
           console.log(response.data);
           this.message = "Barang data has been successfully saved.";
