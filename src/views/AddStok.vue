@@ -1,15 +1,15 @@
 <template>
-  <v-container class="my-2" fluid>
+  <div class="my-2 container mx-auto">
     <form @submit.prevent="addBarang">
       <div class="space-y-12 mx-4">
         <div class="ms-4">
           <h2 class="text-base font-semibold leading-7 text-gray-900">
-            Barang
+            Stok Barang
           </h2>
           <p
             class="border-b border-gray-900/10 pb-10 mt-1 text-sm leading-6 text-gray-600"
           >
-            Provide the quantity and type for your stock barang.
+            Pilih barang yang akan diubah jumlahnya.
           </p>
 
           <div
@@ -17,7 +17,9 @@
             v-for="(barang, index) in barangs"
             :key="index"
           >
-            <h2 class="font-semibold text-gray-900">Pilih Barang</h2>
+            <h2 class="font-semibold text-gray-900">
+              Pilih Barang {{ index + 1 }}
+            </h2>
             <div
               class="mt-4 mb-4 grid grid-cols-1 gap-4 gap-y-8 sm:grid-cols-2"
             >
@@ -86,7 +88,7 @@
                                 selected ? 'font-semibold' : 'font-normal',
                                 'ml-3 block truncate capitalize',
                               ]"
-                              >{{ person.nama }}</span
+                              >{{ person.code }}</span
                             >
                           </div>
 
@@ -119,11 +121,6 @@
                     class="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6"
                   >
                     <span class="flex items-center">
-                      <!-- <span
-                          v-if="!barang.status_id"
-                          class="ml-3 block truncate capitalize"
-                          >Choose Status</span
-                        > -->
                       <span
                         v-if="selectedTipe[index]"
                         class="ml-3 block truncate capitalize"
@@ -198,7 +195,7 @@
             >
               <div class="">
                 <label
-                  for="jumlah"
+                  :for="'jumlah-' + barang.id"
                   class="block text-sm font-medium leading-6 text-gray-900 capitalize"
                   >Jumlah</label
                 >
@@ -207,7 +204,7 @@
                     type="number"
                     name="jumlah"
                     v-model="barang.jumlah"
-                    id="jumlah"
+                    :id="'jumlah-' + barang.id"
                     autocomplete="given-name"
                     class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     required
@@ -219,31 +216,42 @@
         </div>
       </div>
 
-      <div class="mt-6 mb-4 me-4 flex items-center justify-end gap-x-6">
-        <button
-          type="button"
-          @click="tambahFormInput"
-          class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-        >
-          Tambah Form Input
-        </button>
-        <button
-          type="button"
-          @click="navigate"
-          class="text-sm font-semibold leading-6 text-gray-900"
-        >
-          Cancel
-        </button>
-        <button
-          type="submit"
-          class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-        >
-          Save
-        </button>
+      <div class="mt-6 mb-4 ms-8 me-8 flex items-center justify-between">
+        <div class="flex gap-x-6">
+          <button
+            type="button"
+            @click="tambahFormInput"
+            class="text-sm font-semibold text-white bg-gray-900 border border-white-300 hover:bg-white hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-white rounded-md text-sm px-5 py-2 text-center inline-flex items-center"
+          >
+            Tambah Form
+          </button>
+          <button
+            type="button"
+            @click="hapusFormInput"
+            class="text-sm font-semibold text-gray-900 bg-white border border-gray-300 hover:bg-gray-800 hover:text-white focus:ring-4 focus:outline-none focus:ring-gray-300 rounded-md text-sm px-3 py-2 text-center inline-flex items-center"
+          >
+            Hapus Form
+          </button>
+        </div>
+        <div class="flex gap-x-6">
+          <button
+            type="button"
+            @click="navigate"
+            class="text-sm font-semibold leading-6 text-sm font-semibold text-gray-900 bg-white border border-gray-300 hover:bg-gray-800 hover:text-white focus:ring-4 focus:outline-none focus:ring-gray-300 rounded-md text-sm px-3 py-2 text-center inline-flex items-center"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            class="text-sm font-semibold text-white bg-gray-900 border border-white-300 hover:bg-white hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-white rounded-md text-sm px-3 py-2 text-center inline-flex items-center"
+          >
+            Save
+          </button>
+        </div>
       </div>
     </form>
     <TransitionRoot as="template" :show="open">
-      <Dialog as="div" class="relative z-10" @close="closeModals">
+      <Dialog as="div" class="relative z-10" @close="closeModals()">
         <TransitionChild
           as="template"
           enter="ease-out duration-300"
@@ -334,7 +342,7 @@
         </div>
       </Dialog>
     </TransitionRoot>
-  </v-container>
+  </div>
 </template>
 
 <script setup>
@@ -374,13 +382,15 @@ export default {
       selectedList: [],
       list: [],
       selectedTipe: [],
+      formInput: 1,
       barangs: [
         {
+          id: this.formInput,
           code: "",
           nama: "",
-          jumlah: 0,
+          jumlah: "",
           deskripsi: "",
-          status_id: "",
+          isActive: "",
         },
       ],
       message: "",
@@ -429,7 +439,7 @@ export default {
           this.open = true;
         })
         .catch((error) => {
-          this.message = "Gagal memperbarui stok.";
+          this.message = "Jumlah barang tidak cukup.";
           this.open = true;
           this.success = false;
         });
@@ -447,19 +457,25 @@ export default {
     },
     tambahFormInput() {
       const newFormInput = {
+        id: this.formInput,
         code: "",
         nama: "",
-        jumlah: 0,
+        jumlah: "",
         deskripsi: "",
-        status_id: this.selectedKategori ? this.selectedKategori.id : null,
+        isActive: "",
       };
 
+      this.formInput++;
+
       this.barangs.push(newFormInput);
+    },
+    hapusFormInput() {
+      this.barangs.pop();
     },
     navigate() {
       if (this.success == true) {
         this.open = false;
-        this.$router.push("/about");
+        this.$router.push("/barang");
       } else {
         this.open = false;
       }

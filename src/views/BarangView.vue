@@ -1,8 +1,8 @@
 <template>
-  <v-container class="my-2">
+  <div class="my-2 container mx-auto">
     <div class="relative mx-4 overflow-x-auto shadow-md sm:rounded-lg">
       <div class="pb-4 bg-white dark:bg-gray-900 mx-2 my-2">
-        <label for="table-search" class="sr-only">Search</label>
+        <label for="table-search" class="sr-only">Cari</label>
         <div class="relative flex justify-between items-center">
           <div
             class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
@@ -28,7 +28,7 @@
             type="text"
             id="table-search"
             class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-gray-500 focus:border-gray-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="Search for items"
+            placeholder="Cari Barang"
           />
           <div class="relative">
             <Menu as="div" class="relative inline-block text-left">
@@ -36,7 +36,7 @@
                 <MenuButton
                   class="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900"
                 >
-                  Sort
+                  Urutkan
                   <ChevronDownIcon
                     class="-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
                     aria-hidden="true"
@@ -81,14 +81,14 @@
             <button
               type="button"
               @click="navigateStock"
-              class="ms-2 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              class="ms-4 text-gray-900 bg-white border border-gray-300 hover:bg-gray-800 hover:text-white focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2 text-center inline-flex items-center mr-2"
             >
               Ubah Stok
             </button>
             <button
               @click="navigate"
               type="button"
-              class="ms-2 mr-10 text-gray-900 bg-white border border-gray-300 hover:bg-gray-800 hover:text-white focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              class="ms-2 mr-10 text-gray-900 bg-white border border-gray-300 hover:bg-gray-800 hover:text-white focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2 text-center inline-flex items-center mr-2"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -119,7 +119,7 @@
       </div>
       <table
         v-else
-        class="table-fixed text-sm text-left text-gray-500 dark:text-gray-400"
+        class="w-full text-sm text-left text-gray-500 dark:text-gray-400"
       >
         <thead
           class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
@@ -139,12 +139,11 @@
                 >
               </div>
             </th>
-            <th scope="col" class="w-3/12 px-6 py-3">Code</th>
-            <th scope="col" class="w-2/12 px-4 py-3">Nama</th>
-            <th scope="col" class="w-1/12 px-6 py-3">Jumlah</th>
-            <th scope="col" class="w-2/12 px-6 py-3">Deskripsi</th>
-            <th scope="col" class="w-2/12 px-6 py-3">Status</th>
-            <th scope="col" class="w-2/12 px-6 py-3">Action</th>
+            <th scope="col" class="px-6 py-3">Code</th>
+            <th scope="col" class="px-6 py-3">Nama</th>
+            <th scope="col" class="px-6 py-3">Deskripsi</th>
+            <th scope="col" class="px-6 py-3">Jumlah</th>
+            <th scope="col" class="px-6 py-3">Status</th>
           </tr>
         </thead>
         <tbody>
@@ -169,41 +168,23 @@
                 >
               </div>
             </td>
-            <td
-              class="px-6 py-4 max-w-lg font-medium text-gray-900 dark:text-white"
-            >
+            <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
               {{ item.code }}
             </td>
-            <td class="px-4 py-4 capitalize">
+            <td class="px-6 py-4 capitalize">
               {{ item.nama }}
             </td>
             <td class="px-6 py-4 capitalize">
-              {{ item.jumlah }}
+              {{ item.deskripsi }}
             </td>
             <td class="px-6 py-4 capitalize">
-              {{ item.deskripsi }}
+              {{ item.jumlah }}
             </td>
             <td v-if="item.isActive == true" class="px-6 py-4 capitalize">
               Aktif
             </td>
             <td v-if="item.isActive == false" class="px-6 py-4 capitalize">
               Tidak Aktif
-            </td>
-            <td class="px-6 py-4">
-              <button
-                type="button"
-                @click="editProduct(item.id_produk, $event)"
-                class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-xs px-2 py-1.5 mr-1 mb-1 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
-              >
-                Edit
-              </button>
-              <button
-                @click="openModals(item.id_produk, $event)"
-                type="button"
-                class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-xs px-2 py-1.5 mr-1 mb-1 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
-              >
-                Delete
-              </button>
             </td>
           </tr>
         </tbody>
@@ -312,7 +293,7 @@
         </div>
       </Dialog>
     </TransitionRoot>
-  </v-container>
+  </div>
 </template>
 
 <script setup>
@@ -333,7 +314,7 @@ import { ChevronDownIcon } from "@heroicons/vue/20/solid";
 import axios from "axios";
 
 export default {
-  name: "ProductView",
+  name: "BarangView",
   data() {
     return {
       searchQuery: "",

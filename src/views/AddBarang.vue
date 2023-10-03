@@ -1,15 +1,15 @@
 <template>
-  <v-container class="my-2" fluid>
+  <div class="my-2 container mx-auto">
     <form @submit.prevent="addBarang">
       <div class="space-y-12 mx-4">
         <div class="ms-4">
           <h2 class="text-base font-semibold leading-7 text-gray-900">
-            Add New Barang
+            Tambah Barang Baru
           </h2>
           <p
             class="border-b border-gray-900/10 pb-10 mt-1 text-sm leading-6 text-gray-600"
           >
-            Provide the details for your new barang.
+            Isi rincian untuk barang baru.
           </p>
 
           <div
@@ -94,7 +94,7 @@
               </div>
 
               <div class="">
-                <Listbox as="div" v-model="barang.status_id">
+                <Listbox as="div" v-model="selectedStatus[index]">
                   <ListboxLabel
                     class="block text-sm font-medium leading-6 text-gray-900"
                     >Status</ListboxLabel
@@ -104,25 +104,14 @@
                       class="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6"
                     >
                       <span class="flex items-center">
-                        <!-- <span
-                          v-if="!barang.status_id"
-                          class="ml-3 block truncate capitalize"
-                          >Choose Status</span
-                        > -->
                         <span
-                          v-if="barang.status_id == true"
+                          v-if="selectedStatus[index]"
                           class="ml-3 block truncate capitalize"
                         >
-                          Aktif</span
-                        >
-                        <span
-                          v-else-if="barang.status_id == false"
-                          class="ml-3 block truncate capitalize"
-                        >
-                          Tidak Aktif</span
+                          {{ selectedStatus[index].status }}</span
                         >
                         <span v-else class="ml-3 block truncate capitalize">
-                          Choose Status</span
+                          Pilih Status</span
                         >
                       </span>
                       <span
@@ -147,7 +136,7 @@
                           as="template"
                           v-for="person in status"
                           :key="person.id"
-                          :value="person.id"
+                          :value="person"
                           v-slot="{ active, selected }"
                         >
                           <li
@@ -158,28 +147,13 @@
                               'relative cursor-default select-none py-2 pl-3 pr-9',
                             ]"
                           >
-                            <div
-                              class="flex items-center"
-                              v-if="person.id == true"
-                            >
+                            <div class="flex items-center">
                               <span
                                 :class="[
                                   selected ? 'font-semibold' : 'font-normal',
                                   'ml-3 block truncate capitalize',
                                 ]"
-                                >Aktif</span
-                              >
-                            </div>
-                            <div
-                              class="flex items-center"
-                              v-if="person.id == false"
-                            >
-                              <span
-                                :class="[
-                                  selected ? 'font-semibold' : 'font-normal',
-                                  'ml-3 block truncate capitalize',
-                                ]"
-                                >Tidak Aktif</span
+                                >{{ person.status }}</span
                               >
                             </div>
 
@@ -204,31 +178,42 @@
         </div>
       </div>
 
-      <div class="mt-6 mb-4 me-4 flex items-center justify-end gap-x-6">
-        <button
-          type="button"
-          @click="tambahFormInput"
-          class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-        >
-          Tambah Form Input
-        </button>
-        <button
-          type="button"
-          @click="navigate"
-          class="text-sm font-semibold leading-6 text-gray-900"
-        >
-          Cancel
-        </button>
-        <button
-          type="submit"
-          class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-        >
-          Save
-        </button>
+      <div class="mt-6 mb-4 ms-8 me-4 flex items-center justify-between">
+        <div class="flex gap-x-6">
+          <button
+            type="button"
+            @click="tambahFormInput"
+            class="text-sm font-semibold text-white bg-gray-900 border border-white-300 hover:bg-white hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-white rounded-md text-sm px-5 py-2 text-center inline-flex items-center"
+          >
+            Tambah Form
+          </button>
+          <button
+            type="button"
+            @click="hapusFormInput"
+            class="text-sm font-semibold text-gray-900 bg-white border border-gray-300 hover:bg-gray-800 hover:text-white focus:ring-4 focus:outline-none focus:ring-gray-300 rounded-md text-sm px-3 py-2 text-center inline-flex items-center"
+          >
+            Hapus Form
+          </button>
+        </div>
+        <div class="flex gap-x-6">
+          <button
+            type="button"
+            @click="navigate"
+            class="text-sm font-semibold text-gray-900 bg-white border border-gray-300 hover:bg-gray-800 hover:text-white focus:ring-4 focus:outline-none focus:ring-gray-300 rounded-md text-sm px-5 py-2 text-center inline-flex items-center"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            class="text-sm font-semibold text-white bg-gray-900 border border-white-300 hover:bg-white hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-white rounded-md text-sm px-5 py-2 text-center inline-flex items-center"
+          >
+            Save
+          </button>
+        </div>
       </div>
     </form>
     <TransitionRoot as="template" :show="open">
-      <Dialog as="div" class="relative z-10" @close="closeModals">
+      <Dialog as="div" class="relative z-10" @close="closeModals()">
         <TransitionChild
           as="template"
           enter="ease-out duration-300"
@@ -319,7 +304,7 @@
         </div>
       </Dialog>
     </TransitionRoot>
-  </v-container>
+  </div>
 </template>
 
 <script setup>
@@ -345,24 +330,21 @@ export default {
     return {
       open: false,
       status: [
-        { id: true, status: "Aktif" },
-        { id: false, status: "Tidak Aktif" },
+        { bool: true, status: "Aktif" },
+        { bool: false, status: "Tidak Aktif" },
       ],
       color: [],
       selectedKategori: "",
-      selectedStatus: "",
+      selectedStatus: [],
       selectedItems: [],
       selectAll: false,
-      formattedPrice: "",
-      image: "",
-      barang: {},
       barangs: [
         {
           code: "",
           nama: "",
-          jumlah: 0,
+          jumlah: "",
           deskripsi: "",
-          status_id: "",
+          isActive: "",
         },
       ],
       message: "",
@@ -377,11 +359,17 @@ export default {
       console.log(this.selectedKategori.id);
     },
     addBarang() {
-      //   for (let i = 0; i < this.barangs.length; i++) {
-      //     this.barangs[i].status_id = this.selectedKategori.id;
-      //   }
+      const data = this.barangs.map((barang, index) => ({
+        code: barang.code,
+        nama: barang.nama,
+        jumlah: barang.jumlah,
+        deskripsi: barang.deskripsi,
+        isActive: this.selectedStatus[index]
+          ? this.selectedStatus[index].bool
+          : null,
+      }));
       axios
-        .post("/api/barang", this.barangs)
+        .post("/api/barang", data)
         .then((response) => {
           console.log(response.data);
           this.message = "Barang data has been successfully saved.";
@@ -400,12 +388,15 @@ export default {
       const newFormInput = {
         code: "",
         nama: "",
-        jumlah: 0,
+        jumlah: "",
         deskripsi: "",
-        status_id: this.selectedKategori ? this.selectedKategori.id : null,
+        isActive: "",
       };
 
       this.barangs.push(newFormInput);
+    },
+    hapusFormInput() {
+      this.barangs.pop();
     },
     navigate() {
       if (this.success == true) {
