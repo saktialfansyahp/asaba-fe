@@ -66,7 +66,7 @@
                     >
                       <ListboxOption
                         as="template"
-                        v-for="person in list"
+                        v-for="person in sortedList"
                         :key="person.id"
                         :value="person"
                         v-slot="{ active, selected }"
@@ -360,8 +360,8 @@ export default {
     return {
       open: false,
       tipe: [
-        { bool: true, tipe: "Masuk" },
-        { bool: false, tipe: "Keluar" },
+        { bool: true, tipe: "masuk" },
+        { bool: false, tipe: "keluar" },
       ],
       color: [],
       selectedKategori: "",
@@ -390,6 +390,12 @@ export default {
   beforeMount() {
     this.fetchData();
   },
+  computed: {
+    sortedList() {
+      const sort = this.list.sort((a, b) => a.nama.localeCompare(b.nama));
+      return sort;
+    },
+  },
   methods: {
     handleSelect(person) {
       const indexToRemove = this.list.findIndex(
@@ -409,24 +415,24 @@ export default {
       console.log(this.selectedKategori.id);
     },
     addBarang() {
-      //   for (let i = 0; i < this.barangs.length; i++) {
-      //     this.barangs[i].status_id = this.selectedKategori.id;
-      //   }
-      // axios
-      //   .post("/api/barang", this.barangs)
-      //   .then((response) => {
-      //     console.log(response.data);
-      //     this.message = "Barang data has been successfully saved.";
-      //     this.success = true;
-      //     this.open = true;
-      //   })
-      //   .catch((error) => {
-      //     this.open = true;
-      //     this.message = "Failed to add barang. Please try again.";
-      //     this.success = false;
-      //     console.log(this.selectedKategori);
-      //     console.log(this.barangs);
-      //   });
+      const stok = this.barangs.map((barang, index) => ({
+        code: this.selectedList[index] ? this.selectedList[index].code : null,
+        tipe: this.selectedTipe[index] ? this.selectedTipe[index].tipe : null,
+        jumlah: barang.jumlah,
+      }));
+      axios
+        .post("/api/stok", stok)
+        .then((response) => {
+          console.log(response.data);
+          this.message = "Stok berhasil di perbarui.";
+          this.success = true;
+          this.open = true;
+        })
+        .catch((error) => {
+          this.message = "Gagal memperbarui stok.";
+          this.open = true;
+          this.success = false;
+        });
     },
     fetchData() {
       axios
@@ -453,7 +459,7 @@ export default {
     navigate() {
       if (this.success == true) {
         this.open = false;
-        this.$router.push("/barang");
+        this.$router.push("/about");
       } else {
         this.open = false;
       }

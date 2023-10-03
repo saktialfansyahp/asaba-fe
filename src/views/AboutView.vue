@@ -83,7 +83,7 @@
               @click="navigateStock"
               class="ms-2 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
-              Tambah Stock
+              Ubah Stok
             </button>
             <button
               @click="navigate"
@@ -104,7 +104,7 @@
                   d="M12 4.5v15m7.5-7.5h-15"
                 />
               </svg>
-              Add Product
+              Tambah Barang
             </button>
           </div>
         </div>
@@ -174,19 +174,19 @@
             >
               {{ item.code }}
             </td>
-            <td class="px-4 py-4 uppercase">
+            <td class="px-4 py-4 capitalize">
               {{ item.nama }}
             </td>
-            <td class="px-6 py-4 uppercase">
+            <td class="px-6 py-4 capitalize">
               {{ item.jumlah }}
             </td>
-            <td class="px-6 py-4 uppercase">
+            <td class="px-6 py-4 capitalize">
               {{ item.deskripsi }}
             </td>
-            <td v-if="item.isActive == true" class="px-6 py-4 uppercase">
+            <td v-if="item.isActive == true" class="px-6 py-4 capitalize">
               Aktif
             </td>
-            <td v-if="item.isActive == false" class="px-6 py-4 uppercase">
+            <td v-if="item.isActive == false" class="px-6 py-4 capitalize">
               Tidak Aktif
             </td>
             <td class="px-6 py-4">
