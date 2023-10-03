@@ -239,13 +239,13 @@
             @click="navigate"
             class="text-sm font-semibold leading-6 text-sm font-semibold text-gray-900 bg-white border border-gray-300 hover:bg-gray-800 hover:text-white focus:ring-4 focus:outline-none focus:ring-gray-300 rounded-md text-sm px-3 py-2 text-center inline-flex items-center"
           >
-            Cancel
+            Batal
           </button>
           <button
             type="submit"
             class="text-sm font-semibold text-white bg-gray-900 border border-white-300 hover:bg-white hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-white rounded-md text-sm px-3 py-2 text-center inline-flex items-center"
           >
-            Save
+            Simpan
           </button>
         </div>
       </div>
