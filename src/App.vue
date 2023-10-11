@@ -60,6 +60,13 @@
                     >
                       Barang
                     </router-link>
+                    <router-link
+                      to="/stok"
+                      class="rounded-md px-3 py-2 text-sm font-medium text-white hover:bg-gray-700 hover:text-white"
+                      active-class="bg-gray-900 text-white"
+                    >
+                      Stok
+                    </router-link>
                   </div>
                 </div>
               </div>

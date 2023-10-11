@@ -3,6 +3,7 @@ import HomeView from "../views/HomeView.vue";
 import AddBarang from "../views/AddBarang.vue";
 import AddStok from "../views/AddStok.vue";
 import BarangView from "../views/BarangView.vue";
+import StokView from "../views/StokView.vue";
 
 const routes = [
   {
@@ -24,6 +25,11 @@ const routes = [
     path: "/barang",
     name: "Barang",
     component: BarangView,
+  },
+  {
+    path: "/stok",
+    name: "Stok",
+    component: StokView,
   },
 ];
 

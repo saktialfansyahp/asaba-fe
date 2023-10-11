@@ -2,119 +2,14 @@
   <div class="my-2 container mx-auto">
     <div class="relative mx-4 overflow-x-auto shadow-md sm:rounded-lg">
       <div class="pb-4 bg-white dark:bg-gray-900 mx-2 my-2">
-        <label for="table-search" class="sr-only">Cari</label>
-        <div class="relative flex justify-between items-center">
-          <div
-            class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
-          >
-            <svg
-              class="w-4 h-4 text-gray-500 dark:text-gray-400"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 20 20"
-            >
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-              />
-            </svg>
-          </div>
-          <input
-            v-model="searchQuery"
-            type="text"
-            id="table-search"
-            class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-gray-500 focus:border-gray-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="Cari Barang"
-          />
-          <div class="relative">
-            <Menu as="div" class="relative inline-block text-left">
-              <div>
-                <MenuButton
-                  class="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900"
-                >
-                  Urutkan
-                  <ChevronDownIcon
-                    class="-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
-                    aria-hidden="true"
-                  />
-                </MenuButton>
-              </div>
-
-              <transition
-                enter-active-class="transition ease-out duration-100"
-                enter-from-class="transform opacity-0 scale-95"
-                enter-to-class="transform opacity-100 scale-100"
-                leave-active-class="transition ease-in duration-75"
-                leave-from-class="transform opacity-100 scale-100"
-                leave-to-class="transform opacity-0 scale-95"
-              >
-                <MenuItems
-                  class="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none"
-                >
-                  <div class="py-1">
-                    <MenuItem
-                      v-for="option in sortOptions"
-                      :key="option.name"
-                      v-slot="{ active }"
-                    >
-                      <a
-                        :href="option.href"
-                        :class="[
-                          option.current
-                            ? 'font-medium text-gray-900'
-                            : 'text-gray-500',
-                          active ? 'bg-gray-100' : '',
-                          'block px-4 py-2 text-sm',
-                        ]"
-                        @click="changeProductSort(option)"
-                        >{{ option.name }}</a
-                      >
-                    </MenuItem>
-                  </div>
-                </MenuItems>
-              </transition>
-            </Menu>
-            <button
-              type="button"
-              @click="navigateStock"
-              class="ms-4 text-gray-900 bg-white border border-gray-300 hover:bg-gray-800 hover:text-white focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2 text-center inline-flex items-center mr-2"
-            >
-              Ubah Stok
-            </button>
-            <button
-              @click="navigate"
-              type="button"
-              class="ms-2 mr-10 text-gray-900 bg-white border border-gray-300 hover:bg-gray-800 hover:text-white focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2 text-center inline-flex items-center mr-2"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                class="w-3.5 h-3.5 mr-2"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M12 4.5v15m7.5-7.5h-15"
-                />
-              </svg>
-              Tambah Barang
-            </button>
-          </div>
-        </div>
+        <h5 class="ms-2 mt-2 font-medium">History</h5>
       </div>
       <div
         v-if="products.length < 1"
         class="ms-2 border-b border-gray-900/10 pb-10"
       >
         <h2 class="text-base font-semibold leading-7 text-gray-900 text-center">
-          Product not available
+          History not available
         </h2>
       </div>
       <table
@@ -140,15 +35,13 @@
               </div>
             </th>
             <th scope="col" class="px-6 py-3">Code</th>
-            <th scope="col" class="px-6 py-3">Nama</th>
-            <th scope="col" class="px-6 py-3">Deskripsi</th>
+            <th scope="col" class="px-6 py-3">Tipe</th>
             <th scope="col" class="px-6 py-3">Jumlah</th>
-            <th scope="col" class="px-6 py-3">Status</th>
           </tr>
         </thead>
         <tbody>
           <tr
-            v-for="item in filteredProducts"
+            v-for="item in products"
             :key="item.id"
             @click="detail(item.id_produk)"
             class="w-full bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer"
@@ -172,19 +65,10 @@
               {{ item.code }}
             </td>
             <td class="px-6 py-4 capitalize">
-              {{ item.nama }}
-            </td>
-            <td class="px-6 py-4 capitalize">
-              {{ item.deskripsi }}
+              {{ item.tipe }}
             </td>
             <td class="px-6 py-4 capitalize">
               {{ item.jumlah }}
-            </td>
-            <td v-if="item.isActive == true" class="px-6 py-4 capitalize">
-              Aktif
-            </td>
-            <td v-if="item.isActive == false" class="px-6 py-4 capitalize">
-              Tidak Aktif
             </td>
           </tr>
         </tbody>
@@ -335,40 +219,6 @@ export default {
       selectedSortOption: "",
     };
   },
-  computed: {
-    filteredProducts() {
-      const searchTerm = this.searchQuery.toLowerCase();
-      const searchJuml = parseInt(searchTerm, 10);
-      let filter = this.products
-        .filter((product) => {
-          const isMatchingName = product.nama
-            .toLowerCase()
-            .includes(searchTerm);
-          const isMatchingCode = product.code
-            .toLowerCase()
-            .includes(searchTerm);
-          const isMatchingDesc = product.deskripsi
-            .toLowerCase()
-            .includes(searchTerm);
-          const isMatchingJumlah =
-            !isNaN(searchJuml) && product.jumlah === searchJuml;
-          return (
-            isMatchingName ||
-            isMatchingCode ||
-            isMatchingJumlah ||
-            isMatchingDesc
-          );
-        })
-        .sort((a, b) => a.nama.localeCompare(b.nama));
-
-      if (this.selectedSortOption.name === "Ascending") {
-        filter.sort((a, b) => a.nama.localeCompare(b.nama));
-      } else if (this.selectedSortOption.name === "Descending") {
-        filter.sort((b, a) => a.nama.localeCompare(b.nama));
-      }
-      return filter;
-    },
-  },
   beforeMount() {
     this.fetchData();
   },
@@ -399,22 +249,6 @@ export default {
       this.open = true;
       console.log(this.product_id);
     },
-    deleteProduct() {
-      axios
-        .delete(`/api/produk/${this.product_id}`)
-        .then((response) => {
-          console.log(response.data);
-          this.open = false;
-          this.fetchData();
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    },
-    editProduct(id, event) {
-      event.stopPropagation();
-      this.$router.push("editproduct/" + id);
-    },
     navigate() {
       this.$store.state.history = this.$route.name;
       this.$router.push("/addbarang");
@@ -424,9 +258,12 @@ export default {
     },
     fetchData() {
       axios
-        .get("/api/barang")
+        .get("/api/stok")
         .then((response) => {
           this.products = response.data.data;
+          this.products.sort((a, b) => {
+            return new Date(b.created_at) - new Date(a.created_at);
+          });
           console.log(this.products);
         })
         .catch((error) => {

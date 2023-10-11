@@ -433,7 +433,7 @@ export default {
       axios
         .post("/api/stok", stok)
         .then((response) => {
-          console.log(response.data);
+          console.log(response);
           this.message = "Stok berhasil di perbarui.";
           this.success = true;
           this.open = true;
@@ -442,6 +442,7 @@ export default {
           this.message = "Jumlah barang tidak cukup.";
           this.open = true;
           this.success = false;
+          console.log(stok);
         });
     },
     fetchData() {

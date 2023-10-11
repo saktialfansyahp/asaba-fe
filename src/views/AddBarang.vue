@@ -359,6 +359,16 @@ export default {
       console.log(this.selectedKategori.id);
     },
     addBarang() {
+      const duplicateCodes = this.barangs
+        .map((barang) => barang.code)
+        .filter((code, index, arr) => arr.indexOf(code) !== index);
+
+      if (duplicateCodes.length > 0) {
+        this.message = "Duplicate codes found. Please fix the codes.";
+        this.success = false;
+        this.open = true;
+        return;
+      }
       const data = this.barangs.map((barang, index) => ({
         code: barang.code,
         nama: barang.nama,
